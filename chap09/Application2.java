@@ -15,13 +15,11 @@ public class Application2 {
 
         }
 
-        // 3️⃣ 단어 분리
         String[] words = sb.toString().split("\\s+");
         String[] wordsarr = new String[words.length];
         int[] counts = new int[words.length];
         int ucnt = 0;
 
-        // 4️⃣ 단어 빈도 계산 (배열 활용)
         for (String word : words) {
             if (word.isEmpty()) continue;
             boolean check = false;
