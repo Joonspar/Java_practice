@@ -17,6 +17,6 @@ public class Application1 {
                 System.out.println(Character.toUpperCase(arr[i].charAt(0)) + arr[i].substring(1));
             }
         }
-        System.out.println("총 단어 개수 확인 : " + arr.length);
+        System.out.println("총 단어 개수 : " + arr.length);
     }
 }
