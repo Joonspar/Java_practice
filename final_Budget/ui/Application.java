@@ -88,47 +88,73 @@ public class Application {
     public void registerExpend() {
         System.out.print("지출 날짜 입력 (yyyy-MM-dd): ");
         String inputDate = sc.nextLine();
+        LocalDate date;
 
-        try {
-            LocalDate date = LocalDate.parse(inputDate);
-
-            System.out.println("지출 카테고리를 선택하세요:");
-            for (ExpenseCategory category : ExpenseCategory.values()) {
-                System.out.println((category.ordinal() + 1) + ". " + category);
+        while (true) {
+            try {
+                date = LocalDate.parse(inputDate);
+                break;
+            } catch (Exception e) {
+                System.out.println("잘못된 날짜 형식입니다. 다시 입력해주세요 (yyyy-MM-dd): ");
+                inputDate = sc.nextLine();
             }
-
-            System.out.print("카테고리 번호 입력: ");
-            String categoryStr = sc.nextLine();
-            int categoryIndex = Integer.parseInt(categoryStr);
-
-            if (categoryIndex < 1 || categoryIndex > ExpenseCategory.values().length) {
-                System.out.println("올바른 카테고리를 선택하세요.");
-                return;
-            }
-
-            ExpenseCategory selectedCategory = ExpenseCategory.values()[categoryIndex - 1];
-
-            System.out.print("지출 금액 입력: ");
-            String amountStr = sc.nextLine();
-            int amount = Integer.parseInt(amountStr);
-
-            System.out.print("상세 내용 입력: ");
-            String description = sc.nextLine();
-
-            System.out.println("입력한 데이터 확인:");
-            System.out.println("날짜: " + date);
-            System.out.println("카테고리: " + selectedCategory);
-            System.out.println("금액: " + amount);
-            System.out.println("상세 내용: " + description);
-
-            infoService.addExpense(date, selectedCategory, amount, description);
-            System.out.println("지출이 성공적으로 등록되었습니다.");
-
-        } catch (Exception e) {
-            System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
-            e.printStackTrace();
         }
+
+        ExpenseCategory selectedCategory = null;
+        while (true) {
+            try {
+                System.out.println("지출 카테고리를 선택하세요:");
+                for (ExpenseCategory category : ExpenseCategory.values()) {
+                    System.out.println((category.ordinal() + 1) + ". " + category);
+                }
+
+                System.out.print("카테고리 번호 입력: ");
+                String categoryStr = sc.nextLine();
+                int categoryIndex = Integer.parseInt(categoryStr);
+
+                if (categoryIndex < 1 || categoryIndex > ExpenseCategory.values().length) {
+                    System.out.println("올바른 카테고리를 선택하세요.");
+                    continue;
+                }
+
+                selectedCategory = ExpenseCategory.values()[categoryIndex - 1];
+                break;
+            } catch (Exception e) {
+                System.out.println("잘못된 입력입니다. 숫자로 다시 입력해주세요.");
+            }
+        }
+
+        int amount;
+        while (true) {
+            try {
+                System.out.print("지출 금액 입력: ");
+                String amountStr = sc.nextLine();
+                amount = Integer.parseInt(amountStr);
+
+                if (amount <= 0) {
+                    System.out.println("금액은 0보다 커야 합니다. 다시 입력해주세요.");
+                    continue;
+                }
+
+                break;
+            } catch (Exception e) {
+                System.out.println("잘못된 입력입니다. 숫자로 다시 입력해주세요.");
+            }
+        }
+
+        System.out.print("상세 내용 입력: ");
+        String description = sc.nextLine();
+
+        System.out.println("\n입력한 데이터 확인:");
+        System.out.println("날짜: " + date);
+        System.out.println("카테고리: " + selectedCategory);
+        System.out.println("금액: " + amount);
+        System.out.println("상세 내용: " + description);
+
+        infoService.addExpense(date, selectedCategory, amount, description);
+        System.out.println("지출이 성공적으로 등록되었습니다.\n");
     }
+
 
 
 
